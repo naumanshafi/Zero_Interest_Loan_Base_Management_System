@@ -1,0 +1,247 @@
+﻿{% extends 'Committee/base.html' %}
+{% load staticfiles %}
+{% block Head %}
+    <link rel="stylesheet" href="{% static '/Committee/css/post.css' %}">
+    <link rel="stylesheet" href="{% static '/Committee/css/friendlist.css' %}">
+    <title>Show Committee</title>
+{% endblock %}
+
+{% block User %}
+    {{ User.FullName }}
+{% endblock %}
+
+{% block Body %}
+    <div>
+        <h1 align="center">My Committee's</h1>
+        <div class="form-group">
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li>
+                            <div class="alert  alert-success "> {{ message }} </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        {% for Committee,friends in zipped_list_My_Committees %}
+            <div class="row">
+                <div class="leftcolumn">
+                    <div id="post" class="card">
+                        <div class="row no-gutters">
+                            <div class="col-10">
+                                <img style="width: auto; height: 70px;" class="rounded-circle account-img img-fluid"
+                                     src="{{ User.ProfilePicture.url }}">
+                                {{ User.FullName }}
+                            </div>
+                        </div>
+                        <p>Your Committee name is {{ Committee.CommitteeName }}.</p>
+                        <p>Total Price for committee is {{ Committee.Price }}.</p>
+                        <p>Current Available Members are {{ Committee.PresentMember }}</p>
+                        <p>Total Number of Required Members are {{ Committee.TotalMember }}</p>
+                        <p>Manager's Email for this Committee is {{ Committee.Manager }}</p>
+                        <a href="{% url 'Committee-StartCommittee' Committee_ID=Committee.id %}">
+                            <button type="submit" class="btn row-lg-3 btn-lg  updatebutton">Start Committee</button>
+                        </a>
+                        <a href="{% url 'Committee-RequestPayment' Committee_ID=Committee.id %}">
+                            <button type="submit" class="btn row-lg-3 btn-lg  updatebutton">Request Payment</button>
+                        </a>
+                        <a href="{% url 'Committee-winner' Committee_ID=Committee.id %}">
+                            <button type="submit" class="btn row-lg-3 btn-lg  updatebutton">Compute Winner</button>
+                        </a>
+                        <section id="team" class="pb-5">
+                            <div class="container">
+                                <div class="row">
+                                    {% if not friends %}
+                                        <h3>No Members Found</h3>
+                                    {% else %}
+                                        {% for friend in friends %}
+                                            <div class="col-xs-12 col-sm-6 col-md-4">
+                                                <div class="image-flip"
+                                                     ontouchstart="this.classList.toggle('hover');">
+                                                    <div class="mainflip">
+                                                        <div class="frontside">
+                                                            <div class="card">
+                                                                <div class="card-body text-center">
+                                                                    <p><img class=" img-fluid"
+                                                                            src="{{ friend.ProfilePicture.url }}"
+                                                                            alt="card image"></p>
+                                                                    <h4 class="card-title"
+                                                                        id="blacky">{{ friend.FullName }}</h4>
+                                                                    <p class="card-text" id="blacky">
+                                                                        UserName: {{ friend.Username }}</p>
+                                                                    <p class="card-text" id="blacky">You can also
+                                                                        contact me
+                                                                        on: {{ friend.Email }}</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="backside">
+                                                            <div class="card">
+                                                                <div class="card-body text-center mt-4">
+                                                                    <h4 class="card-title"
+                                                                        id="blacky">{{ friend.FullName }}</h4>
+                                                                    <br>
+                                                                    <p class="card-text" id="blacky"> Make Him
+                                                                        Sub-Manager of Committee:
+                                                                        {{ Committee.CommitteeName }}</p>
+                                                                    <a href="{% url 'Committee-CommitteeStarter' Friend_ID=friend.Email Committee_ID=Committee.id %}">
+                                                                        <button type="button"
+                                                                                class="btn btn-lg btn-primary  Haha">
+                                                                            Committee
+                                                                            Starter
+                                                                        </button>
+                                                                    </a>
+                                                                    <br>
+                                                                    <a href="{% url 'Committee-CommitteeRequester'  Friend_ID=friend.Email Committee_ID=Committee.id %}">
+                                                                        <button type="button"
+                                                                                class="btn btn-lg btn-primary Haha">
+                                                                            Committee
+                                                                            Requester
+                                                                        </button>
+                                                                    </a><br>
+                                                                    <a href="{% url 'Committee-CommitteeWinner' Friend_ID=friend.Email Committee_ID=Committee.id %}">
+                                                                        <button type="button"
+                                                                                class="btn btn-lg btn-primary Haha">
+                                                                            Committee
+                                                                            Winner
+                                                                        </button>
+                                                                    </a><br>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        <h1 align="center">Other Committee's</h1>
+        {% for Committee,Duties,friends,User in withoutManager %}
+            <div class="row">
+                <div class="leftcolumn">
+                    <div id="post" class="card">
+                        <div class="row no-gutters">
+                            <div class="col-10">
+                                <img style="width: auto; height: 70px;" class="rounded-circle account-img img-fluid"
+                                     src="{{ User.ProfilePicture.url }}">
+                                {{ User.FullName }}
+                            </div>
+                        </div>
+                        <p>Your Committee name is {{ Committee.Committee_ID.CommitteeName }}.</p>
+                        <p>Total Price for committee is {{ Committee.Committee_ID.Price }}.</p>
+                        <p>Current Available Members are {{ Committee.Committee_ID.PresentMember }}</p>
+                        <p>Total Number of Required Members are {{ Committee.Committee_ID.TotalMember }}</p>
+                        <p>Manager's Email for this Committee is {{ Committee.Committee_ID.Manager }}</p>
+                        {% if Duties.Start_Committee == True %}
+                            <a href="{% url 'Committee-StartCommittee' Committee_ID=Committee.id %}">
+                                <button type="submit" class="btn row-lg-3 btn-lg  updatebutton">Start
+                                    Committee
+                                </button>
+                            </a>
+                        {% endif %}
+                        {% if Duties.Request_Payment == True %}
+                            <a href="{% url 'Committee-RequestPayment' Committee_ID=Committee.id %}">
+                                <button type="submit" class="btn row-lg-3 btn-lg  updatebutton">Request
+                                    Payment
+                                </button>
+                            </a>
+                        {% endif %}
+                        {% if Duties.Winner == True %}
+                            <a href="{% url 'Committee-winner' Committee_ID=Committee.id %}">
+                                <button type="submit" class="btn row-lg-3 btn-lg  updatebutton">Compute
+                                    Winner
+                                </button>
+                            </a>
+                        {% endif %}
+                        <section id="team" class="pb-5">
+                            <div class="container">
+                                <div class="row">
+                                    {% if not friends %}
+                                        <h3>No Members Found</h3>
+                                    {% else %}
+                                        {% for friend in friends %}
+                                            <div class="col-xs-12 col-sm-6 col-md-4">
+                                                <div class="image-flip"
+                                                     ontouchstart="this.classList.toggle('hover');">
+                                                    <div class="mainflip">
+                                                        <div class="frontside">
+                                                            <div class="card">
+                                                                <div class="card-body text-center">
+                                                                    <p><img class=" img-fluid"
+                                                                            src="{{ friend.ProfilePicture.url }}"
+                                                                            alt="card image"></p>
+                                                                    <h4 class="card-title"
+                                                                        id="blacky">{{ friend.FullName }}</h4>
+                                                                    <p class="card-text" id="blacky">
+                                                                        UserName: {{ friend.Username }}</p>
+                                                                    <p class="card-text" id="blacky">You can also
+                                                                        contact me
+                                                                        on: {{ friend.Email }}</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="backside">
+                                                            <div class="card">
+                                                                <div class="card-body text-center mt-4">
+                                                                    <h4 class="card-title"
+                                                                        id="blacky">{{ friend.FullName }}</h4>
+                                                                    <p class="card-text" id="blacky">He is member of
+                                                                        committee named
+                                                                        as: {{ Committee.Committee_ID.CommitteeName }}
+                                                                        .He is from
+                                                                        {{ friend.City }}</p>
+
+                                                                    <ul class="list-inline">
+                                                                        <li class="list-inline-item">
+                                                                            <a class="social-icon text-xs-center"
+                                                                               target="_blank"
+                                                                               href="#">
+                                                                                <i class="fab fa-facebook"></i>
+                                                                            </a>
+                                                                        </li>
+                                                                        <li class="list-inline-item">
+                                                                            <a class="social-icon text-xs-center"
+                                                                               target="_blank"
+                                                                               href="#">
+                                                                                <i class="fab fa-twitter"></i>
+                                                                            </a>
+                                                                        </li>
+                                                                        <li class="list-inline-item">
+                                                                            <a class="social-icon text-xs-center"
+                                                                               target="_blank"
+                                                                               href="#">
+                                                                                <i class="fab fa-skype"></i>
+                                                                            </a>
+                                                                        </li>
+                                                                        <li class="list-inline-item">
+                                                                            <a class="social-icon text-xs-center"
+                                                                               target="_blank"
+                                                                               href="#">
+                                                                                <i class="fab fa-google"></i>
+                                                                            </a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

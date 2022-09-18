@@ -1,0 +1,8 @@
+{% if articles.count > 0 %}
+    {% for article in articles %}
+        <li>{{ article.Username }} {{ ' ' }} {{ article.FullName }}{{ ' ' }} {{ article.City }}</li>
+
+    {% endfor %}
+{% else %}
+    <li> Nothing To Show</li>
+{% endif %}

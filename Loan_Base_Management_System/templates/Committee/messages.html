@@ -1,0 +1,17 @@
+{% for obj in chat %}
+    {% if obj.user.Username == "Robot" %}
+        <li class="list-group-item-item" style="font-size:20px;color:red">
+            {{ obj.message }}
+        </li>
+
+    {% elif obj.user == request.user and obj.user.Username != "Robot" %}
+        <li class="text-right list-group-item">{{ obj.user.Username }}
+            {{ "::" }}{{ obj.message }}</li>
+    {% else %}
+        <li class="text-left list-group-item">{{ obj.user.Username }}
+            {{ "::" }}{{ obj.message }}</li>
+    {% endif %}
+{% empty %}
+    <li class="text-right list-group-item">No more messages</li>
+{% endfor %}
+

@@ -1,0 +1,99 @@
+﻿{% extends 'Committee/base.html' %}
+{% load staticfiles %}
+{% block Head %}
+    <link rel="stylesheet" href="{% static '/Committee/css/friendlist.css' %}">
+    <title>Friend Suggession</title>
+{% endblock %}
+
+{% block User %}
+    {{ MyData.FullName }}
+{% endblock %}
+
+{% block Body %}
+    <div>
+        <h1 align="center">Suggested Friend List</h1>
+        <section id="team" class="pb-5">
+            <div class="container">
+                <div class="row">
+                    {% if not Flag %}
+                        <h3>No More Friend Suggestions Found</h3>
+                    {% else %}
+                        {% for user in users %}
+                            {% if not user in friends %}
+                                <div class="col-xs-12 col-sm-6 col-md-4">
+                                    <div class="image-flip" ontouchstart="this.classList.toggle('hover');">
+                                        <div class="mainflip">
+                                            <div class="frontside">
+                                                <div class="card">
+                                                    <div class="card-body text-center">
+                                                        <p><img class=" img-fluid"
+                                                                src="{{ user.ProfilePicture.url }}"
+                                                                alt="card image"></p>
+                                                        <h4 class="card-title" id="blacky">{{ user.FullName }}</h4>
+                                                        <p class="card-text" id="blacky">
+                                                            UserName: {{ user.Username }}</p>
+                                                        <p class="card-text" id="blacky">You can also contact me
+                                                            on: {{ user.Email }}</p>
+
+{#                                                        <a href="{% url 'Committee-changefriendlist1' operation='Add Friend' pk=user.Email %}">#}
+{#                                                            <button type="button"#}
+{#                                                                    class="btn btn-lg btn-primary">ADD#}
+{#                                                                Friend#}
+{#                                                            </button>#}
+{#                                                        </a>#}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="backside">
+                                                <div class="card">
+                                                    <div class="card-body text-center mt-4">
+                                                        <h4 class="card-title" id="blacky">{{ user.FullName }}</h4>
+                                                        <p class="card-text" id="blacky">He is Professional Entrepreneur
+                                                            .He
+                                                            is also
+                                                            from
+                                                            {{ user.City }}</p>
+                                                        <ul class="list-inline">
+                                                            <li class="list-inline-item">
+                                                                <a class="social-icon text-xs-center"
+                                                                   target="_blank"
+                                                                   href="#">
+                                                                    <i class="fab fa-facebook"></i>
+                                                                </a>
+                                                            </li>
+                                                            <li class="list-inline-item">
+                                                                <a class="social-icon text-xs-center"
+                                                                   target="_blank"
+                                                                   href="#">
+                                                                    <i class="fab fa-twitter"></i>
+                                                                </a>
+                                                            </li>
+                                                            <li class="list-inline-item">
+                                                                <a class="social-icon text-xs-center"
+                                                                   target="_blank"
+                                                                   href="#">
+                                                                    <i class="fab fa-skype"></i>
+                                                                </a>
+                                                            </li>
+                                                            <li class="list-inline-item">
+                                                                <a class="social-icon text-xs-center"
+                                                                   target="_blank"
+                                                                   href="#">
+                                                                    <i class="fab fa-google"></i>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+    </div>
+{% endblock %}

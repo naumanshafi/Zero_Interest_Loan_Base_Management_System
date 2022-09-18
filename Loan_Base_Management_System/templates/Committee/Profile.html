@@ -1,0 +1,49 @@
+﻿{% extends 'Committee/base.html' %}
+{% load staticfiles %}
+
+{% block Head %}
+    <title>Profile</title>
+{% endblock %}
+
+{% block User %}
+    {{ User.FullName }}
+{% endblock %}
+
+{% block Body %}
+    <div>
+        <div class="mycard">
+            {% csrf_token %}
+            <h1 align="center">Profile</h1>
+            <div class="image-container">
+                <img src="{{ User.ProfilePicture.url }}" style="width:100%"/>
+                <div class="title">
+                    <h2>{{ User.FullName }}</h2>
+                </div>
+            </div>
+            <div class="skill-bar">
+                <p><i class="fa fa-briefcase info"></i> Student</p>
+                <p><i class="fa fa-home info"></i>{{ User.City }}</p>
+                <p><i class="fa fa-envelope info"></i>UserName: {{ User.Username }}  </p>
+                <p><i class="fa fa-envelope info"></i>{{ User.Email }}  </p>
+                <p><i class="fa fa-phone info"></i>012-345-678</p>
+                <hr>
+                <p><b><i class="fa fa-asterik info"></i>Skills</b></p>
+                <div>
+                    <p> C++ Programming</p>
+                    <div class="progress-bar" style="width:100%">100%</div>
+                    a
+                    <p> Graphic Designing</p>
+                    <div class="progress-bar" style="width:80%">80%</div>
+                    <p> Wordpress</p>
+                    <div>
+                        <div class="progress-bar" style="width:70%">70%</div>
+                    </div>
+                    <p> UI Designer</p>
+                    <div>
+                        <div class="progress-bar" style="width:90%">90%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Committee System</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+            integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+            crossorigin="anonymous"></script>
+    <link href="{% static '/Committee/css/style.css' %}" rel="stylesheet">
+    <link href="{% static '/Committee/css/login.css' %}" rel="stylesheet">
+
+</head>
+<body>
+<div>
+    <nav class="navbar navbar-expand-md  sticky-top ">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'Committee-Home' %}"> <img src="{% static '/Committee/images/capture.png' %}"/></a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+                <span class="navbar-toggler-icon"><</span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'Committee-Home' %}">Home</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="{% url 'Committee-Home' %}#aboutimage">About Us</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="{% url 'Committee-Home' %}#contacts">Contact Us</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="{% url 'Committee-login' %}">Log in</a>
+                    </li>
+                    <li class="nav-item ">
+                        <a class="nav-link" href="{% url 'Committee-SignUp' %}">Sign up</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="form-group">
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li>
+                        <div class="alert  alert-success "> {{ message }} </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+    <div class="login-box">
+        <img src="{% static '/Committee/images/capture.png' %}" class="avatar">
+        <h1>Login Here</h1>
+        <form class="login100-form validate-form" method="post">
+            {% csrf_token %}
+
+            <div class="a">
+                <span class="label-input100">Email </span>
+                {{ loginForm.Email }}
+                {{ loginForm.Email.errors }}
+            </div>
+            <div>
+                <span class="label-input100  " minlength="8">Password</span>
+                {{ loginForm.Password }}
+                {{ loginForm.Password.errors }}
+            </div>
+            <br>
+            <input type="submit" name="submit" value="Login">
+        </form>
+    </div>
+</div>
+</body>
+</html>

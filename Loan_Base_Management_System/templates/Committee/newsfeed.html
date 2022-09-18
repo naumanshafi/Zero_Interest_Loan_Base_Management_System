@@ -1,0 +1,63 @@
+﻿{% extends 'Committee/base.html' %}
+{% load staticfiles %}
+{% block Head %}
+    <script
+            src="https://code.jquery.com/jquery-2.0.0.js"
+            integrity="sha256-iW43nTNM8LFseNmWKhV5FHFW1KcjVQMvzg3l9nPU4oc="
+            crossorigin="anonymous"></script>
+    <script src="{% static '/Committee/js/ajax.js' %}"></script>
+    <link rel="stylesheet" href="{% static '/Committee/css/post.css' %}">
+    <title>News Feed</title>
+{% endblock %}
+
+{% block SearchBar %}
+    <form class="form-inline my-2 my-lg-0">
+        {% csrf_token %}
+        <input id="search" name="search" class="form-control mr-sm-2" type="search" placeholder="Search">
+        <ul id="search-results"></ul>
+    </form>
+{% endblock %}
+
+{% block User %}
+    {{ MyData.FullName }}
+{% endblock %}
+
+{% block Body %}
+    <div>
+        <h1 align="center">HOME</h1>
+        <div class="form-group">
+            {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                        <li>
+                            <div class="alert  alert-success "> {{ message }} </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        {% for Committee,User in Committees %}
+            <div class="row">
+                <div class="leftcolumn">
+                    <div id="post" class="card">
+                        <div class="row no-gutters">
+                            <div class="col-10">
+                                <img style="width: auto; height: 70px;" class="rounded-circle account-img img-fluid"
+                                     src="{{ User.ProfilePicture.url }}">
+                                {{ User.FullName }}
+                            </div>
+                        </div>
+                        <p>Committee name is {{ Committee.CommitteeName }}.</p>
+                        <p>Total Price for committee is {{ Committee.Price }}.</p>
+                        <p>Current Available Members are {{ Committee.PresentMember }}</p>
+                        <p>Total Number of Required Members are {{ Committee.TotalMember }}</p>
+                        <p>Manager's Email for this Committee is {{ Committee.Manager }}</p>
+                        <a href="{% url 'Committee-JoinCommittee' Committee_ID=Committee.id %}">
+                            <button type="submit" class="btn row-lg-3 btn-lg  updatebutton">Join Committee</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

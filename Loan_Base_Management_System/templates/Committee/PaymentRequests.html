@@ -1,0 +1,51 @@
+{% extends 'Committee/base.html' %}
+{% load staticfiles %}
+
+{% block Head %}
+    <link rel="stylesheet" href="{% static '/Committee/css/post.css' %}">
+    <title>Payment Requests</title>
+{% endblock %}
+
+{% block User %}
+    {{ MyData.FullName }}
+{% endblock %}
+
+{% block Body %}
+    <h1 align="center">Payment Requests</h1>
+    <div class="form-group">
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li>
+                        <div class="alert  alert-success "> {{ message }} </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+    {% for Committee,User,Price in Requests %}
+        <div class="row">
+            <div class="leftcolumn">
+                <div id="post" class="card">
+                    <div class="row no-gutters">
+                        <div class="col-10">
+                            <img style="width: auto; height: 70px;" class="rounded-circle account-img img-fluid"
+                                 src="{{ User.ProfilePicture.url }}">
+                            {{ User.FullName }}
+                        </div>
+                    </div>
+                    <p>Committee name is {{ Committee.CommitteeName }}.</p>
+                    <p>Manager's Email for this Committee is {{ Committee.Manager }}</p>
+                    <p>{{ User.FullName }} being a Manager/Sub-Manager has requested you ({{ MyData.FullName }}) to pay
+                        the amount of committee . The total Price to be paid is {{ Price }}.</p>
+                    <a href="{% url 'Committee-paid' Committee_ID=Committee.id %}">
+                        <button type="button" class="btn row-lg-3 btn-lg  updatebutton">Payment Done</button>
+                    </a>
+                    <a href="{% url 'checkout'  Committee_ID=Committee.id %}">
+                        <button type="button" class="btn row-lg-3 btn-lg  updatebutton">Pay Online</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
