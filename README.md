@@ -1,4 +1,4 @@
-# Zero-Intrest-Loan-Management-System
+# Zero-Interest -Loan-Management-System
 
 # Product
 We Introduce Zero Intrest Loan Management System idea inspired from South Asian Countries. Members can participate in this System, manage the system and do all the things that can be done. In this system manager create a room where he invites other member to participate. When 10,20 or 30 people(Room capacity defined by the member who created the room) join the room, Now member puts the money in the room on month end through our payment gateway and give it to one member on the group. The process continues till all the member gets there money. The winner of room will be decided by the system based on FCFS or priority base algorithms. An email will be sent to every member of room mentioning the winner. If some member in a group need money on urgent basis then a member of room can request other room members to get room that time. Once approved by all room members, room amount will assigned to that user without any computation.
